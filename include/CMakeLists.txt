@@ -1,4 +1,4 @@
-set(target ${MP2_CUSTOM})
+set(target ${MP2_INCLUDE})
 
 file(GLOB hdrs "*.h*")
 
