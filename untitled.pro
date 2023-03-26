@@ -30,11 +30,17 @@ INCLUDEPATH += \
 SOURCES += \
     src/main.cpp \
     src/mainwindow.cpp \
-    src/tables/unsorted_array.cpp
+    src/tables/unsorted_array.cpp \
+    src/tables/unsorted_list.cpp \
+    src/tables/sorted_array.cpp \
+    src/polynoms/polynom.cpp
 
 HEADERS += \
     include/mainwindow.h \
-    include/tables/unsorted_array.h
+    include/tables/unsorted_array.h \
+    include/tables/unsorted_list.h \
+    include/tables/sorted_array.h \
+    include/polynoms/polynom.h
 
 FORMS += \
     mainwindow.ui
