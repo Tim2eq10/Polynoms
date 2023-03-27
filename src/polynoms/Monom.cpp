@@ -1,14 +1,11 @@
 #include "include/polynoms/Monom.h"
 #include <cmath>
 
-Monom::Monom( double coef_val, unsigned char x,unsigned char y ,unsigned char z) noexcept
-    : coef(coef_val)
+Monom::Monom( double coef_val, unsigned char x,unsigned char y ,unsigned char z) noexcept: coef(coef_val)
 {
     degree=static_cast<unsigned short>(x)*100+y*10+z;
 }
-
-Monom::Monom(double coef_val) noexcept
-    :degree(0), coef(coef_val)
+Monom::Monom(double coef_val) noexcept: degree(0), coef(coef_val)
 {}
 
 Monom& Monom::operator=(const Monom& monom) noexcept
@@ -71,14 +68,12 @@ const Monom Monom::operator*(const Monom& monom) const
 	third.coef *= monom.coef;
 	return third;
 }
-
 Monom& Monom::operator *=(const Monom& other)
 {
 	Monom t(*this);
 	*this=t*other;
 	return *this;
 }
-
 Monom& Monom::operator *=(double temp) noexcept
 {
 	this->coef *= temp;
@@ -97,41 +92,36 @@ bool Monom::operator <(const Monom& other) const noexcept
         return this->coef < other.coef;
 	return this->degree < other.degree;
 }
-
 bool Monom::operator <=(const Monom& other) const noexcept
 {
 	return !(*this>other);
 }
-
 bool Monom::operator >(const Monom& other) const noexcept
 {
 	if (this->degree == other.degree) 
         return this->coef > other.coef;
 	return this->degree > other.degree;
 }
-
 bool Monom::operator >=(const Monom& other) const noexcept
 {
 	return !(*this < other);
 }
-
 bool Monom::operator ==(const Monom& other) const noexcept
 {
 	if (this->degree == other.degree) 
         return this->coef == other.coef;
 	return false;
 }
-
 bool Monom::operator !=(const Monom& other) const noexcept
 {
 	return !(*this == other);
 }
 
+
 bool Monom::LessDegree(const Monom& m) const noexcept
 {
     return (xpower()+ypower()+zpower()<m.xpower()+m.ypower()+m.zpower());
 }  
-
 bool Monom::EqDegree(const Monom& m) const noexcept
 {
     return (xpower()==m.xpower() && ypower()==m.ypower() && zpower()==m.zpower());
@@ -168,7 +158,6 @@ string Monom::stringMonom()
 
 	return result;
 }
-
 double Monom::MonomValueInPoint(double x, double y, double z) noexcept{
     double ans=0;
     ans=coef*pow(x,xpower())*pow(y,ypower())*pow(z,zpower());

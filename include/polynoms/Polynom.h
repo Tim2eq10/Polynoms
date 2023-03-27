@@ -12,59 +12,36 @@ class Polynom
 {
 private:
     list<Monom> Data;
-    string Name;
 public:
 	Polynom();                                       		
+    Polynom(string polynom);
+    Polynom(const list<Monom>&);
+    Polynom(const Monom&);
+    Polynom(const Polynom&);
 
-    Polynom(string Name, string polynom);                       
-
-    Polynom(string, const list<Monom>&);
-
-	Polynom(string, const Monom&);                           
-
-	Polynom(string, const Polynom&);                      
-
-    Polynom& operator =(const Polynom&);
-
-	Polynom operator +(const Polynom&) const;     
-
-	Polynom operator *(const Monom&) const;          
-
-    Polynom operator +(const Monom&) const;  
-
-    Polynom& operator +=(const Monom&) ;
-
-	Polynom operator *(double) const;                
-
-	Polynom operator -(const Polynom&) const;     
-
-	Polynom operator *(const Polynom&) const;   
-
-    Polynom& operator +=(const Polynom&);
-
+    Polynom operator *(const Monom&) const;
+    Polynom operator +(const Monom&) const;
+    Polynom& operator +=(const Monom&);
     Polynom& operator *=(const Monom&);
 
-    Polynom& operator *=(double) const;
+	Polynom operator +(const Polynom&) const;     
+	Polynom operator *(double) const;                
+	Polynom operator -(const Polynom&) const;     
+	Polynom operator *(const Polynom&) const;   
+    Polynom operator /(const Polynom&);
 
+    Polynom& operator =(const Polynom&);
+    Polynom& operator +=(const Polynom&);
     Polynom& operator -=(const Polynom&) ;
-
     Polynom& operator *=(const Polynom&);
+    Polynom& operator /=(const Polynom&);
 
-    Polynom operator/(const Polynom&);
-
-    Polynom& operator/=(const Polynom&);
-
+    Polynom& operator *=(double) const;
+    Polynom& operator /=(double coeff);
     Polynom operator /(double coeff);
 
-    Polynom& operator /=(double coeff);
-
     Polynom Integral(char);
-
-    Polynom AntiIntegral(char);
-
+    Polynom Derivative(char);
     double PolynomValueInPoint(double x, double y, double z) noexcept;
-
-
-
 	string getPolynom();                               
 };
