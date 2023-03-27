@@ -33,14 +33,17 @@ SOURCES += \
     src/tables/unsorted_array.cpp \
     src/tables/unsorted_list.cpp \
     src/tables/sorted_array.cpp \
-    src/polynoms/polynom.cpp
+    src/polynoms/Monom.cpp \
+    src/polynoms/Polynom.cpp
 
 HEADERS += \
     include/mainwindow.h \
     include/tables/unsorted_array.h \
     include/tables/unsorted_list.h \
     include/tables/sorted_array.h \
-    include/polynoms/polynom.h
+    include/polynoms/Monom.h \
+    include/polynoms/Polynom.h \
+    include/polynoms/Polynom.h
 
 FORMS += \
     mainwindow.ui
