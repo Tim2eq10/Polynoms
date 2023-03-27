@@ -22,17 +22,28 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-CONFIG += c++11
+CONFIG += c++17
+
+INCLUDEPATH += \
+    include
 
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp
+    src/main.cpp \
+    src/mainwindow.cpp \
+    src/tables/unsorted_array.cpp \
+    src/tables/unsorted_list.cpp \
+    src/tables/sorted_array.cpp \
+    src/polynoms/polynom.cpp
 
 HEADERS += \
-        mainwindow.h
+    include/mainwindow.h \
+    include/tables/unsorted_array.h \
+    include/tables/unsorted_list.h \
+    include/tables/sorted_array.h \
+    include/polynoms/polynom.h
 
 FORMS += \
-        mainwindow.ui
+    mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
