@@ -34,7 +34,9 @@ SOURCES += \
     src/tables/unsorted_list.cpp \
     src/tables/sorted_array.cpp \
     src/polynoms/Monom.cpp \
-    src/polynoms/Polynom.cpp
+    src/polynoms/Polynom.cpp \
+    src/tables/connector.cpp \
+    src/tables/hasher.cpp
 
 HEADERS += \
     include/mainwindow.h \
@@ -43,7 +45,9 @@ HEADERS += \
     include/tables/sorted_array.h \
     include/polynoms/Monom.h \
     include/polynoms/Polynom.h \
-    include/polynoms/Polynom.h
+    include/polynoms/Polynom.h \
+    include/tables/connector.h \
+    include/tables/hasher.h
 
 FORMS += \
     mainwindow.ui

@@ -44,7 +44,7 @@ private:
     //_HashMap_Chains<kT, T> f;
     //_HashMap_OpenAddressing<kT, T> g;
 public:
-    TableType active_table;
+    TableType active_table{};
 };
 
 #endif // CONNECTOR_H
