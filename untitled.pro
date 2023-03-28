@@ -36,7 +36,8 @@ SOURCES += \
     src/polynoms/Monom.cpp \
     src/polynoms/Polynom.cpp \
     src/tables/connector.cpp \
-    src/tables/hasher.cpp
+    src/tables/hasher.cpp \
+    src/tables/hashmap_chains.cpp
 
 HEADERS += \
     include/mainwindow.h \
@@ -47,7 +48,8 @@ HEADERS += \
     include/polynoms/Polynom.h \
     include/polynoms/Polynom.h \
     include/tables/connector.h \
-    include/tables/hasher.h
+    include/tables/hasher.h \
+    include/tables/hashmap_chains.h
 
 FORMS += \
     mainwindow.ui
