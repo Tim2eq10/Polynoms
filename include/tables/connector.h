@@ -1,7 +1,7 @@
 #include "include/tables/sorted_array.h"
 #include "include/tables/unsorted_array.h"
 #include "include/tables/unsorted_list.h"
-//#include "include/tables/hashmap_chains.h"
+#include "include/tables/hashmap_chains.h"
 //#include "include/tables/hashmap_open_adressing.h"
 //#include "include/tables/AVL_tree.h"
 //#include "include/tables/RB_tree.h"
@@ -41,7 +41,7 @@ private:
     _Table_sorted_array<kT, T> c;
     //_Map_RB_Tree<kT, T> d;
     //_Map_AVL_Tree<kT, T> e;
-    //_HashMap_Chains<kT, T> f;
+    _HashMap_Chains<kT, T> f;
     //_HashMap_OpenAddressing<kT, T> g;
 public:
     TableType active_table{};

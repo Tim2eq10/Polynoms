@@ -7,7 +7,7 @@ void all_tables<kT,T>::insert(const kT& key, const T& value) {
     c.insert(key, value, true);
     //d.insert(key, value, true);
     //e.insert(key, value, true);
-    //f.insert(key, value, true);
+    f.insert(key, value, true);
     //g.insert(key, value, true);
 }
 
@@ -18,7 +18,7 @@ void all_tables<kT,T>::remove(const kT& key) {
     c.remove(key);
     //d.remove(key);
     //e.remove(key);
-    //f.remove(key);
+    f.remove(key);
     //g.remove(key);
 }
 
@@ -40,7 +40,7 @@ ND T& all_tables<kT,T>::at(const kT& key) {
         //return e.at(key);
     case HASHMAP_CHAINS:
         break;
-        //return f.at(key);
+        return f.at(key);
     case HASHMAP_OPENADRESSING:
         break;
         //return g.at(key);
@@ -65,7 +65,7 @@ ND bool all_tables<kT,T>::find(const kT& key) {
         //return e.find(key);
     case HASHMAP_CHAINS:
         break;
-        //return f.find(key);
+        return f.find(key);
     case HASHMAP_OPENADRESSING:
         break;
         //return g.find(key);
@@ -90,7 +90,7 @@ ND size_t all_tables<kT,T>::size() const noexcept {
         //return e.size();
     case HASHMAP_CHAINS:
         break;
-        //return f.size();
+        return f.size();
     case HASHMAP_OPENADRESSING:
         break;
         //return g.size();
