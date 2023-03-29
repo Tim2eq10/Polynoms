@@ -2,7 +2,7 @@
 #include "include/tables/unsorted_array.h"
 #include "include/tables/unsorted_list.h"
 #include "include/tables/hashmap_chains.h"
-//#include "include/tables/hashmap_open_adressing.h"
+#include "include/tables/hashmap_openadressing.h"
 //#include "include/tables/AVL_tree.h"
 //#include "include/tables/RB_tree.h"
 
@@ -42,7 +42,7 @@ private:
     //_Map_RB_Tree<kT, T> d;
     //_Map_AVL_Tree<kT, T> e;
     _HashMap_Chains<kT, T> f;
-    //_HashMap_OpenAddressing<kT, T> g;
+    _HashMap_OpenAddressing<kT, T> g;
 public:
     TableType active_table{};
 };
@@ -57,7 +57,7 @@ void all_tables<kT,T>::insert(const kT& key, const T& value) {
     //d.insert(key, value, true);
     //e.insert(key, value, true);
     f.insert(key, value, true);
-    //g.insert(key, value, true);
+    g.insert(key, value, true);
 }
 
 template <typename kT, typename T>
@@ -68,7 +68,7 @@ void all_tables<kT,T>::remove(const kT& key) {
     //d.remove(key);
     //e.remove(key);
     f.remove(key);
-    //g.remove(key);
+    g.remove(key);
 }
 
 template <typename kT, typename T>
@@ -88,11 +88,9 @@ ND T& all_tables<kT,T>::at(const kT& key) {
         break;
         //return e.at(key);
     case HASHMAP_CHAINS:
-        break;
         return f.at(key);
     case HASHMAP_OPENADRESSING:
-        break;
-        //return g.at(key);
+        return g.at(key);
     };
 }
 
@@ -113,11 +111,9 @@ ND bool all_tables<kT,T>::find(const kT& key) {
         break;
         //return e.find(key);
     case HASHMAP_CHAINS:
-        break;
         return f.find(key);
     case HASHMAP_OPENADRESSING:
-        break;
-        //return g.find(key);
+        return g.find(key);
     };
 }
 
@@ -138,11 +134,9 @@ ND size_t all_tables<kT,T>::size() const noexcept {
         break;
         //return e.size();
     case HASHMAP_CHAINS:
-        break;
         return f.size();
     case HASHMAP_OPENADRESSING:
-        break;
-        //return g.size();
+        return g.size();
     };
 }
 
