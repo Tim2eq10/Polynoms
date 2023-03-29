@@ -1,5 +1,7 @@
 #include "include/polynoms/Polynom.h"
 
+Polynom::Polynom()
+{}
 Polynom::Polynom(const Polynom& other) : Data(other.Data)
 {}
 Polynom::Polynom(const list<Monom>& other)
@@ -127,47 +129,47 @@ Polynom Polynom::operator -(const Polynom& right) const
 
     return res;
 }
-Polynom Polynom::operator *(const Polynom&) const
-{}
-Polynom Polynom::operator /(const Polynom&)
-{}
+Polynom Polynom::operator *(const Polynom& other) const
+{ return other; }
+Polynom Polynom::operator /(const Polynom& other)
+{ return other; }
 
-Polynom& Polynom::operator =(const Polynom& right)
+Polynom& Polynom::operator =(const Polynom& other)
 {
-    if (this == &right)
+    if (this == &other)
         return *this;
 
-    Data = right.Data;
+    Data = other.Data;
     return *this;
 }
-Polynom& Polynom::operator +=(const Polynom&)
-{}
-Polynom& Polynom::operator -=(const Polynom&)
-{}
-Polynom& Polynom::operator *=(const Polynom&)
-{}
-Polynom& Polynom::operator /=(const Polynom&)
-{}
+Polynom& Polynom::operator +=(const Polynom& other)
+{ return const_cast<Polynom&>(other); }
+Polynom& Polynom::operator -=(const Polynom& other)
+{ return const_cast<Polynom&>(other); }
+Polynom& Polynom::operator *=(const Polynom& other)
+{ return const_cast<Polynom&>(other); }
+Polynom& Polynom::operator /=(const Polynom& other)
+{ return const_cast<Polynom&>(other); }
 
 
 //==================================//
 // Polynom -> double binary methods //
 //==================================//
 Polynom& Polynom::operator *=(double) const
-{}
+{ return const_cast<Polynom&>(*this); }
 Polynom& Polynom::operator /=(double coeff)
-{}
+{ return const_cast<Polynom&>(*this); }
 Polynom Polynom::operator /(double coeff)
-{}
+{ return const_cast<Polynom&>(*this); }
 
 //===============//
 // Miscellaneous //
 //===============//
 Polynom Polynom::Integral(char)
-{}
+{ return *this; }
 Polynom Polynom::Derivative(char)
-{}
+{ return *this; }
 double Polynom::PolynomValueInPoint(double x, double y, double z) noexcept
-{}
+{ return x; }
 string Polynom::getPolynom()
-{}
+{ return {}; }
