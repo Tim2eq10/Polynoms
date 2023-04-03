@@ -45,7 +45,8 @@ HEADERS += \
     include/tables/connector.h \
     include/tables/hasher.h \
     include/tables/hashmap_chains.h \
-    include/tables/hashmap_openadressing.h
+    include/tables/hashmap_openadressing.h \
+    include/tables/tree_avl.h
 
 FORMS += \
     mainwindow.ui
