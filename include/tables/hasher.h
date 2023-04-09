@@ -13,4 +13,6 @@ struct _Hasher {
     }
 };
 
+template <>
+struct _Hasher<std::string>;
 #endif // HASHER_H
