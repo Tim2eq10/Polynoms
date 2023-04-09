@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-using namespace std;
+using std::string;
 
 class Monom
 {
@@ -16,8 +16,8 @@ public:
     unsigned char zpower()const {return (degree%10);}
 
 	Monom() = default;                                        
-    //TODO : unsigned char
     Monom( double, unsigned char,unsigned char,unsigned char)noexcept;
+    Monom(string);
     Monom(double) noexcept;
 
     Monom& operator =(const Monom&)noexcept;
@@ -29,7 +29,7 @@ public:
     Monom& operator +=(const Monom&);   
     Monom& operator -=(const Monom&);
     Monom& operator *=(const Monom&);
-    Monom& operator *=(double) noexcept; // А почему другие не noexcept?
+    Monom& operator *=(double) noexcept; // А почему другие не noexcept?    Answer:потому что 
 
 	bool operator <(const Monom&) const noexcept;            
 	bool operator <=(const Monom&) const noexcept;           
