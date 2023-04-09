@@ -1,7 +1,5 @@
 #include "include/polynoms/Polynom.h"
 
-Polynom::Polynom()
-{}
 Polynom::Polynom(const Polynom& other) : Data(other.Data)
 {}
 Polynom::Polynom(const list<Monom>& other)
@@ -153,7 +151,6 @@ Polynom Polynom::operator -(const Polynom& right) const
 
     return res;
 }
-
 Polynom Polynom::operator *(const Polynom& right) const
 {
     Polynom res;
@@ -168,15 +165,14 @@ Polynom Polynom::operator *(const Polynom& right) const
     return res;
 }
 
-Polynom& Polynom::operator =(const Polynom& other)
+Polynom& Polynom::operator =(const Polynom& right)
 {
-    if (this == &other)
+    if (this == &right)
         return *this;
 
-    Data = other.Data;
+    Data = right.Data;
     return *this;
 }
-
 Polynom& Polynom::operator +=(const Polynom& right)
 {
     *this = *this + right;
@@ -193,10 +189,11 @@ Polynom& Polynom::operator *=(const Polynom& right)
     return *this;
 }
 
+
+
 //==================================//
 // Polynom -> double binary methods //
 //==================================//
-
 Polynom& Polynom::operator *=(double coeff) 
 {
     *this = *this * coeff;
@@ -217,18 +214,14 @@ Polynom Polynom::operator /(double coeff)
 //===============//
 // Miscellaneous //
 //===============//
-
-/*
-Polynom Polynom::Integral(char)
+/*Polynom Polynom::Integral(char)
 {}
 Polynom Polynom::Derivative(char)
-{ return *this; }
-double Polynom::PolynomValueInPoint(double x, double y, double z) noexcept
-{ return x; }
-string Polynom::getPolynom()
 {}
-*/
-
+double Polynom::PolynomValueInPoint(double x, double y, double z) noexcept
+{}
+string Polynom::getPolynom()
+{}*/
 void Polynom::Sort() {
     if (Data.empty());
     else {
@@ -265,3 +258,4 @@ void Polynom::Sort() {
         }
     }
 }
+
