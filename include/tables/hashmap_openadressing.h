@@ -94,8 +94,10 @@ private:
     ND Node* __Find(key_cref key);
     ND Node* __Find_Insert(key_cref key) noexcept;
 public:
-    _HashMap_OpenAddressing() :
-        sz(0), cap(0), added(0), mem(nullptr) {
+    _HashMap_OpenAddressing() : mem(nullptr) {
+        sz = 0;
+        cap = 0;
+        added = 0;
         reserve(8);
     }
     ND size_type size() const noexcept { return sz; }

@@ -7,18 +7,6 @@ SOURCES += \
 # includepath for main project
 INCLUDEPATH += "../../"
 
-# headers from main project
-HEADERS += \
-    ../../include/tables/connector.h \
-    ../../include/tables/hasher.h \
-    ../../include/tables/hashmap_chains.h \
-    ../../include/tables/hashmap_openadressing.h \
-    ../../include/tables/sorted_array.h \
-    ../../include/tables/unsorted_array.h \
-    ../../include/tables/unsorted_list.h \
-    ../../include/polynoms/Monom.h \
-    ../../include/polynoms/Polynom.h
-
 # sources from main project
 SOURCES += \
     ../../src/tables/hasher.cpp \
@@ -41,3 +29,6 @@ SOURCES += \
     gtest/src/gtest-printers.cc \
     gtest/src/gtest-test-part.cc \
     gtest/src/gtest-typed-test.cc
+
+HEADERS += \
+    tables_tests.h
