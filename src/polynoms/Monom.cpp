@@ -1,4 +1,5 @@
 #include "include/polynoms/Monom.h"
+
 #include <cmath>
 
 Monom::Monom(double coef_val, unsigned char x, unsigned char y, unsigned char z) noexcept : coef(coef_val)
