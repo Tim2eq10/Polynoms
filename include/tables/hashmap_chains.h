@@ -47,8 +47,10 @@ private:
     void reserve(size_type _new_capacity);
     ND auto __Find(key_type key);
 public:
-    _HashMap_Chains() :
-        sz(0), cap(0), max_list_len(0), mem(nullptr) {
+    _HashMap_Chains() : mem(nullptr) {
+        sz = 0;
+        cap = 0;
+        max_list_len = 0;
         reserve(1);
     }
     ND size_type size() const noexcept { return sz; }

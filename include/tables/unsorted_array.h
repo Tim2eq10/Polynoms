@@ -35,7 +35,9 @@ private:
 public:
 
     _Table_unsorted_array()
-        : sz(0), cap(0), mem(nullptr) {
+        : mem(nullptr) {
+        sz = 0;
+        cap = 0;
         reserve(1);
     }
 

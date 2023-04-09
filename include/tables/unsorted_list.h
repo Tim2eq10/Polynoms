@@ -33,8 +33,8 @@ private:
     Node* __Find(key_cref key) const;
 public:
     _Table_unsorted_list()
-        : sz(0),
-        head(nullptr) {
+        : head(nullptr) {
+        sz = 0;
     }
 
     ND size_type size() const noexcept { return sz; }

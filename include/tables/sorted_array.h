@@ -32,8 +32,9 @@ private:
     Node* __Lower_bound(key_cref key) const;
 public:
 
-    _Table_sorted_array()
-        : sz(0), cap(0), mem(nullptr) {
+    _Table_sorted_array() : mem(nullptr) {
+        sz = 0;
+        cap = 0;
         reserve(1);
     }
 
@@ -149,7 +150,7 @@ bool _Table_sorted_array<kT, T>::insert(key_cref key, cref value, bool replaceme
         //TODO : "2 * sz" is some function
         reserve(2 * sz);
     Node* place = __Lower_bound(key);
-    if (place->key != key) {
+    if (place == mem + sz || place->key != key) {
         Node* it = mem + sz;
         new (it) Node(key, value);
         for (Node* it = mem + sz; it > place; it--) {
@@ -166,12 +167,12 @@ bool _Table_sorted_array<kT, T>::insert(key_cref key, cref value, bool replaceme
 template<typename kT, typename T>
 bool _Table_sorted_array<kT, T>::remove(key_cref key) {
     Node* place = __Lower_bound(key);
-    if (place->key != key)
+    if (place == mem + sz || place->key != key)
         return 0;
 
     for (; place < mem + sz; place++) {
         place->~Node();
-        new (place) Node(std::move(*(place + 1)));
+        new (place) Node(*(place + 1));
     }
     place->~Node();
     sz--;
@@ -180,13 +181,14 @@ bool _Table_sorted_array<kT, T>::remove(key_cref key) {
 
 template<typename kT, typename T>
 ND bool _Table_sorted_array<kT, T>::find(key_cref key) {
-    return __Lower_bound(key)->key == key;
+    Node* place = __Lower_bound(key);
+    return place != mem + sz && place->key == key;
 }
 
 template<typename kT, typename T>
 ND typename _Table_sorted_array<kT, T>::ref _Table_sorted_array<kT, T>::at(key_cref key) {
     Node* place = __Lower_bound(key);
-    if (place->key != key)
+    if (place == mem + sz || place->key != key)
         throw std::invalid_argument("No key in table");
     return place->value;
 }
