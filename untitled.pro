@@ -30,11 +30,9 @@ INCLUDEPATH += \
 SOURCES += \
     src/main.cpp \
     src/mainwindow.cpp \
-    src/tables/unsorted_array.cpp \
-    src/tables/unsorted_list.cpp \
-    src/tables/sorted_array.cpp \
     src/polynoms/Monom.cpp \
-    src/polynoms/Polynom.cpp
+    src/polynoms/Polynom.cpp \
+    src/tables/hasher.cpp
 
 HEADERS += \
     include/mainwindow.h \
@@ -43,7 +41,12 @@ HEADERS += \
     include/tables/sorted_array.h \
     include/polynoms/Monom.h \
     include/polynoms/Polynom.h \
-    include/polynoms/Polynom.h
+    include/polynoms/Polynom.h \
+    include/tables/connector.h \
+    include/tables/hasher.h \
+    include/tables/hashmap_chains.h \
+    include/tables/hashmap_openadressing.h \
+    include/tables/tree_avl.h
 
 FORMS += \
     mainwindow.ui
