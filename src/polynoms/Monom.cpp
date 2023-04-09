@@ -1,9 +1,6 @@
 #include "include/polynoms/Monom.h"
 #include <cmath>
 
-#include "Monom.h"
-#include <cmath>
-
 Monom::Monom(double coef_val, unsigned char x, unsigned char y, unsigned char z) noexcept : coef(coef_val)
 {
 	degree = static_cast<unsigned short>(x) * 100 + y * 10 + z;
@@ -168,9 +165,7 @@ bool Monom::operator <=(const Monom& other) const noexcept
 }
 bool Monom::operator >(const Monom& other) const noexcept
 {
-	if (this->degree == other.degree)
-		return this->coef > other.coef;
-	return this->degree > other.degree;
+	return other < *this;
 }
 bool Monom::operator >=(const Monom& other) const noexcept
 {
@@ -178,9 +173,7 @@ bool Monom::operator >=(const Monom& other) const noexcept
 }
 bool Monom::operator ==(const Monom& other) const noexcept
 {
-	if (this->degree == other.degree)
-		return this->coef == other.coef;
-	return false;
+	return !(other<*this || *this>other);
 }
 bool Monom::operator !=(const Monom& other) const noexcept
 {
