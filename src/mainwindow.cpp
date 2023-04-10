@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <string>
+#include <vector>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -60,11 +61,17 @@ void MainWindow::on_pushButton_clicked()
             if (data[i] != ' ' && data[i] != '=')
                 polynomData += data[i];
 
-        Polynom polynom(polynomData.toStdString());
+        Polynom polynom;
+
+        try {
+            polynom = Polynom(polynomData.toStdString());
+        }
+        catch(std::invalid_argument) {
+            polynom = Polynom();
+        }
 
         if (allTables.find(polynomName.toStdString()) == false) {
             allTables.insert(polynomName.toStdString(), polynom);
-
             ui->tableWidget->insertRow(ui->tableWidget->rowCount());
             QTableWidgetItem *itemName = new QTableWidgetItem(polynomName);
             QTableWidgetItem *itemPolynom = new QTableWidgetItem(polynomData);
@@ -73,6 +80,21 @@ void MainWindow::on_pushButton_clicked()
             ui->tableWidget->setItem(ui->tableWidget->rowCount() - 1, 1, itemPolynom);
         }
         else {
+            allTables.insert(polynomName.toStdString(), polynom);
 
+            for (int i = 0; i < ui->tableWidget->rowCount(); i++)
+                if (ui->tableWidget->item(i, 0)->text() == polynomName) {
+                    QTableWidgetItem *itemName = new QTableWidgetItem(polynomName);
+                    QTableWidgetItem *itemPolynom = new QTableWidgetItem(polynomData);
+
+                    ui->tableWidget->setItem(i, 0, itemName);
+                    ui->tableWidget->setItem(i, 1, itemPolynom);
+
+                    return;
+                }
         }
+
 }
+
+/*const Polynom MainWindow::Calculate(string yo){
+}*/

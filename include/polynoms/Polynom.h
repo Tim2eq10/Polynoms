@@ -40,7 +40,7 @@ public:
 
     Polynom Integral(char);
     Polynom Derivative(char);
-    double PolynomValueInPoint(double x, double y, double z) noexcept;
-    string getPolynom();
+    double ValueInPoint(double x, double y, double z) noexcept;
+    string toString();
     void Sort();
 };
