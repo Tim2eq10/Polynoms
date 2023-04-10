@@ -215,13 +215,33 @@ Polynom Polynom::operator /(double coeff)
 // Miscellaneous //
 //===============//
 /*Polynom Polynom::Integral(char)
-{}
+{
+
+}
 Polynom Polynom::Derivative(char)
-{}
-double Polynom::PolynomValueInPoint(double x, double y, double z) noexcept
-{}
-string Polynom::getPolynom()
-{}*/
+{
+
+}*/
+double Polynom::ValueInPoint(double x, double y, double z) noexcept
+{
+    double ans=0;
+    for(auto& hu: Data){
+        ans+=hu.ValueInPoint(x,y,z);
+    }
+    return ans;
+}
+string Polynom::toString()
+{
+    std::string ans;
+    for(auto& hu:Data){
+        if(hu.coef>0)
+            ans=ans+'+'+hu.toString();
+        else {
+            ans+=hu.toString();
+        }
+    }
+    return ans;
+}
 void Polynom::Sort() {
     if (Data.empty());
     else {
@@ -240,7 +260,7 @@ void Polynom::Sort() {
         }
         //delete 0s
         for (auto i = Data.begin(); i != Data.end();) {
-            if (i->coef == 0) {
+            if (i->coef = 0) {
                 Data.erase(i);
             }
             else i++;

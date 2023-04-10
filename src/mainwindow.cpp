@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <string>
+#include <vector>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -94,3 +95,6 @@ void MainWindow::on_pushButton_clicked()
         }
 
 }
+
+/*const Polynom MainWindow::Calculate(string yo){
+}*/
