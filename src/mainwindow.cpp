@@ -46,30 +46,38 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_pushButton_clicked()
 {
-    // TODO
-        // 1. Parse lineEdit.text()
-        // 2. Check if we have this name in tables
-        //   3.a Update val in tables and QTableWidget
-        //   3.b Set new <key, value> in tables and add new row in QTableWidget
+        QString rawInput = ui->lineEdit->text();
+        QString input = "";
+        QString polynomName;
 
-        QString data = ui->lineEdit->text();
+        for (auto c : rawInput)
+            if (c != ' ')
+                input += c;
 
-        QString polynomName = static_cast<QString>(data[0]);
+        if (input.size() > 0 && input[0] >= 'A' && input[0] <= 'Z')
+            polynomName = static_cast<QString>(input[0]);
+        else
+            return;
+
+        if (input[1] != '=')
+            return;
+
         QString polynomData = "";
+        for (int i = 2; i < input.size(); i++)
+            polynomData += input[i];
 
-        for (size_t i = 2; i < static_cast<size_t>(data.size()); i++)
-            if (data[i] != ' ' && data[i] != '=')
-                polynomData += data[i];
-
+        // Transform to Polynom
         Polynom polynom;
-
         try {
             polynom = Polynom(polynomData.toStdString());
         }
         catch(std::invalid_argument) {
-            polynom = Polynom();
+            return;
         }
 
+
+
+        // Add/change in tables
         if (allTables.find(polynomName.toStdString()) == false) {
             allTables.insert(polynomName.toStdString(), polynom);
             ui->tableWidget->insertRow(ui->tableWidget->rowCount());
@@ -86,6 +94,7 @@ void MainWindow::on_pushButton_clicked()
                 if (ui->tableWidget->item(i, 0)->text() == polynomName) {
                     QTableWidgetItem *itemName = new QTableWidgetItem(polynomName);
                     QTableWidgetItem *itemPolynom = new QTableWidgetItem(polynomData);
+                    //QTableWidgetItem *itemPolynom = new QTableWidgetItem(QString::fromStdString(polynom.getPolynom()));
 
                     ui->tableWidget->setItem(i, 0, itemName);
                     ui->tableWidget->setItem(i, 1, itemPolynom);
