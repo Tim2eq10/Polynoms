@@ -1,5 +1,6 @@
 #include "include/polynoms/Monom.h"
 #include <cmath>
+#include <set>
 
 Monom::Monom(double coef_val, unsigned char x, unsigned char y, unsigned char z) noexcept : coef(coef_val)
 {
@@ -8,72 +9,586 @@ Monom::Monom(double coef_val, unsigned char x, unsigned char y, unsigned char z)
 Monom::Monom(double coef_val) noexcept : degree(0), coef(coef_val)
 {}
 
-Monom::Monom(string input_monom)
+Monom::Monom(string raw_input)
 {
-	unsigned short xpow = 0;
-	unsigned short ypow = 0;
-	unsigned short zpow = 0;
-	int coeff = 1;
-	bool dot_count = false;
-	int count_after_dot = 0;
-	for (auto c = input_monom.begin(); c != input_monom.end(); c++) {
-		if (*c == '-' && c == input_monom.begin()) {
-			coeff = -1;
-		}
-		else if (*c == '-' && c != input_monom.begin()) {
-			throw std::invalid_argument("Monomial entered incorrectly1");
-		}
-		else if (*c == '.' && !dot_count) {
-			dot_count = true;
-		}
-		else if (*c == '.' && dot_count) {
-			throw std::invalid_argument("Monomial entered incorrectly2");
-		}
-		else if (*c <= '9' && *c >= '0') {
-			unsigned short t = *c - '0';
-			coef += t;
-			coef *= 10;
-			if (dot_count) {
-				count_after_dot++;
-			}
+    std::string input = "";
+    uint8_t stage = 0;
+    uint8_t digits_after_dot = 0;
+    bool negative_coef = false;
+    std::set<int> good_stages{ 2, 4, 5, 7, 8, 10, 11 ,13, 14, 16, 17, 19,
+                              20, 22, 23, 25, 26, 28, 29, 31, 32, 34, 35,
+                              37, 38, 40, 41, 43, 44, 46, 47, 49 };
+    for (char c : raw_input)
+        if (c != ' ')
+            input += c;
 
-		}
-		else if (*c == 'x') {
-			xpow = 1;
-			auto it = c;
-			it++;
-			if (it != input_monom.end() && *it == '^') {
-				it++;
-				xpow = *it - '0';
-				c += 2;
-			}
-		}
-		else if (*c == 'y') {
-			ypow = 1;
-			auto it = c;
-			it++;
-			if (it != input_monom.end() && *it == '^') {
-				it++;
-				ypow = *it - '0';
-				c += 2;
-			}
-		}
-		else if (*c == 'z') {
-			zpow = 1;
-			auto it = c;
-			it++;
-			if (it != input_monom.end() && *it == '^') {
-				it++;
-				zpow = *it - '0';
-				c += 2;
-			}
-		}
+    degree = 0;
+    coef = 0;
 
-	}
-	if (coef == 0 && (xpow || ypow || zpow)) coef = 1;
-	else coef = coef / pow(10, count_after_dot + 1);
-	coef *= coeff;
-	degree = static_cast<unsigned short>(xpow) * 100 + ypow * 10 + zpow;
+    for (char c : input) {
+        if (stage == 0) {
+            if (c == '-') {
+                negative_coef = true;
+                stage = 1;
+            }
+            else if (c >= '0' && c <= '9') {
+                coef = c - '0';
+                stage = 2;
+            }
+            else if (c == 'x') {
+                coef = 1;
+                stage = 5;
+            }
+            else if (c == 'y') {
+                coef = 1;
+                stage = 20;
+            }
+            else if (c == 'z') {
+                coef = 1;
+                stage = 35;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 1) {
+            if (c == 'x') {
+                stage = 5;
+                coef = 1;
+            }
+            else if (c == 'y') {
+                stage = 20;
+                coef = 1;
+            }
+            else if (c == 'z') {
+                stage = 20;
+                coef = 1;
+            }
+            else if (c >= '0' && c <= '9') {
+                coef = 1 * (c - '0');
+                stage = 2;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 2) {
+            if (c == 'x') {
+                degree = 100;
+                stage = 5;
+            }
+            else if (c == 'y') {
+                stage = 20;
+            }
+            else if (c == 'z') {
+                stage = 35;
+            }
+            else if (c >= '0' && c <= '9') {
+                coef *= 10;
+                coef += (c - '0');
+                stage = 2;
+            }
+            else if (c == '.') {
+                stage = 3;
+                digits_after_dot = 1;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 3) {
+            if (c >= '0' && c <= '9') {
+                stage = 4;
+                coef += (c - '0') / pow(10, digits_after_dot);
+                digits_after_dot++;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 4) {
+            if (c >= '0' && c <= '9') {
+                coef += (c - '0') / pow(10, digits_after_dot);
+                digits_after_dot++;
+            }
+            else if (c == 'x') {
+                degree = 100;
+                stage = 5;
+            }
+            else if (c == 'y') {
+                stage = 20;
+            }
+            else if (c == 'z') {
+                stage = 35;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 5) {
+            if (c == 'y') {
+                degree = 100;
+                stage = 8;
+            }
+            else if (c == 'z') {
+                degree = 100;
+                stage = 14;
+            }
+            else if (c == '^') {
+                degree = 0;
+                stage = 6;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 6) {
+            if (c >= '0' && c <= '9') {
+                degree = static_cast<unsigned short>((c - '0')) * 100;
+                stage = 7;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 7) {
+            if (c == 'y') {
+                stage = 8;
+            }
+            else if (c == 'z') {
+                stage = 14;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 8) {
+            if (c == '^') {
+                stage = 9;
+            }
+            else if (c == 'z') {
+                degree += 10;
+                stage = 11;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 9) {
+            if (c >= '0' && c <= '9') {
+                degree += (c - '0') * 10;
+                stage = 10;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 10) {
+            if (c == 'z') {
+                stage = 11;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 11) {
+            if (c == '^') {
+                stage = 12;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 12) {
+            if (c >= '0' && c <= '9') {
+                degree += c - '0';
+                stage = 13;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 13) {
+            throw std::invalid_argument("Incorrect string to transform");
+        }
+        if (stage == 14) {
+            if (c == '^') {
+                stage = 15;
+            }
+            else if (c == 'y') {
+                degree += 1;
+                stage = 17;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 15) {
+            if (c >= '0' && c <= '9') {
+                degree += c - '0';
+                stage = 16;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 16) {
+            if (c == 'y') {
+                stage = 17;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 17) {
+            if (c == '^') {
+                stage = 18;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 18) {
+            if (c >= '0' && c <= '9') {
+                degree += (c - '0') * 10;
+                stage = 19;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 19) {
+            throw std::invalid_argument("Incorrect string to transform");
+        }
+        if (stage == 20) {
+            if (c == '^') {
+                stage = 21;
+            }
+            else if (c == 'x') {
+                degree = 10;
+                stage = 23;
+            }
+            else if (c == 'z') {
+                degree = 10;
+                stage = 29;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 21) {
+            if (c >= '0' && c <= '9') {
+                degree = static_cast<unsigned short>(c - '0') * 10;
+                stage = 22;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 22) {
+            if (c == 'x') {
+                stage = 23;
+            }
+            else if (c == 'z') {
+                stage = 29;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 23) {
+            if (c == '^') {
+                stage = 24;
+            }
+            else if (c == 'z') {
+                degree += 100;
+                stage = 26;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 24) {
+            if (c >= '0' && c <= '9') {
+                degree += (c - '0') * 100;
+                stage = 25;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 25) {
+            if (c == 'z') {
+                stage = 26;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 26) {
+            if (c == '^') {
+                stage = 27;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 27) {
+            if (c >= '0' && c <= '9') {
+                degree += c - '0';
+                stage = 28;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 28) {
+            throw std::invalid_argument("Incorrect string to transform");
+        }
+        if (stage == 29) {
+            if (c == '^') {
+                stage = 30;
+            }
+            else if (c == 'x') {
+                degree += 1;
+                stage = 32;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 30) {
+            if (c >= '0' && c <= '9') {
+                degree += c - '0';
+                stage = 31;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 31) {
+            if (c == 'x') {
+                stage = 32;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 32) {
+            if (c == '^') {
+                stage = 33;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 33) {
+            if (c >= '0' && c <= '9') {
+                degree += (c - '0') * 100;
+                stage = 34;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 34) {
+            throw std::invalid_argument("Incorrect string to transform");
+        }
+        if (stage == 35) {
+            if (c == '^') {
+                stage = 36;
+            }
+            else if (c == 'x') {
+                degree = 1;
+                stage = 38;
+            }
+            else if (c == 'y') {
+                degree = 1;
+                stage = 44;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 36) {
+            if (c >= '0' && c <= '9') {
+                degree = static_cast<unsigned short>(c - '0');
+                stage = 37;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 37) {
+            if (c == 'x') {
+                stage = 38;
+            }
+            else if (c == 'y') {
+                stage = 44;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 38) {
+            if (c == 'y') {
+                degree += 100;
+                stage = 41;
+            }
+            else if (c == '^') {
+                stage = 39;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 39) {
+            if (c >= '0' && c <= '9') {
+                degree += (c - '0') * 100;
+                stage = 40;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 40) {
+            if (c == 'y') {
+                stage = 41;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 41) {
+            if (c == '^') {
+                stage = 42;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 42) {
+            if (c >= '0' && c <= '9') {
+                degree += (c - '0') * 10;
+                stage = 43;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 43) {
+            throw std::invalid_argument("Incorrect string to transform");
+        }
+        if (stage == 44) {
+            if (c == '^') {
+                stage = 45;
+            }
+            else if (c == 'x') {
+                degree += 10;
+                stage = 47;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 45) {
+            if (c >= '0' && c <= '9') {
+                degree += (c - '0') * 10;
+                stage = 46;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 46) {
+            if (c == 'x') {
+                stage = 47;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 47) {
+            if (c == '^') {
+                stage = 48;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 48) {
+            if (c >= '0' && c <= '9') {
+                degree += (c - '0') * 100;
+                stage = 49;
+            }
+            else {
+                throw std::invalid_argument("Incorrect string to transform");
+            }
+            continue;
+        }
+        if (stage == 49) {
+            throw std::invalid_argument("Incorrect string to transform");
+        }
+    }
+
+    if (good_stages.find(stage) == good_stages.end())
+        throw std::invalid_argument("Incorrect string to transform");
+
+    if (negative_coef)
+            coef *= -1;
+
+    // last char is x
+    if (stage == 5 || stage == 23 || stage == 32 || stage == 38 || stage == 47)
+        degree += 100;
+    // last char is y
+    if (stage == 20 || stage == 8 || stage == 17 || stage == 44 || stage == 41)
+        degree += 10;
+    // last char is z
+    if (stage == 35 || stage == 14 || stage == 11 || stage == 29 || stage == 26)
+        degree += 1;
 }
 Monom& Monom::operator=(const Monom& monom) noexcept
 {
