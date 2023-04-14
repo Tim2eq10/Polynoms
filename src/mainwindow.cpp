@@ -71,8 +71,10 @@ void MainWindow::on_pushButton_clicked()
             polynom = Polynom(polynomData.toStdString());
         }
         catch(std::invalid_argument) {
-            polynom = Polynom();
+            return;
         }
+
+
 
         // Add/change in tables
         if (allTables.find(polynomName.toStdString()) == false) {
@@ -91,6 +93,7 @@ void MainWindow::on_pushButton_clicked()
                 if (ui->tableWidget->item(i, 0)->text() == polynomName) {
                     QTableWidgetItem *itemName = new QTableWidgetItem(polynomName);
                     QTableWidgetItem *itemPolynom = new QTableWidgetItem(polynomData);
+                    //QTableWidgetItem *itemPolynom = new QTableWidgetItem(QString::fromStdString(polynom.getPolynom()));
 
                     ui->tableWidget->setItem(i, 0, itemName);
                     ui->tableWidget->setItem(i, 1, itemPolynom);

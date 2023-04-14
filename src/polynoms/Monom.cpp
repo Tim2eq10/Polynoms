@@ -31,6 +31,9 @@ Monom::Monom(string raw_input)
                 negative_coef = true;
                 stage = 1;
             }
+            else if (c == '+') {
+                stage = 1;
+            }
             else if (c >= '0' && c <= '9') {
                 coef = c - '0';
                 stage = 2;
