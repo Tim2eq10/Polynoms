@@ -6,9 +6,7 @@ bool isOperator(char c) {
     return false;
 }
 bool isOperator(std::string s) {
-    if (s[0] == '+' || s[0] == '-' || s[0] == '*')
-        return true;
-    return false;
+    return isOperator(s[0]);
 }
 
 ArithmeticalExpression::ArithmeticalExpression(const std::string& ar_expr): infix(ar_expr) {
