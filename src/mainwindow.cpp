@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <string>
+#include <vector>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -104,6 +105,7 @@ void MainWindow::on_pushButton_clicked()
 
 }
 
+
 void MainWindow::on_pushButton_3_clicked()
 {
     string input = ui->lineEdit_2->text().toStdString();
@@ -120,9 +122,3 @@ void MainWindow::on_pushButton_3_clicked()
         return;
     }
 }
-
-
-
-
-
-

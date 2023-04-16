@@ -41,6 +41,6 @@ public:
 	bool LessDegree(const Monom&) const noexcept;  
 	bool EqDegree(const Monom&) const noexcept;
 
-    string stringMonom();
-    double MonomValueInPoint(double x, double y, double z) noexcept;
+    string toString();
+    double ValueInPoint(double x, double y, double z) noexcept;
 };

@@ -31,4 +31,5 @@ SOURCES += \
     gtest/src/gtest-typed-test.cc
 
 HEADERS += \
-    tables_tests.h
+    tables_tests.h \
+    polynoms_tests.h

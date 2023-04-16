@@ -19,6 +19,7 @@ public:
     double valueZ = 0;
 
     all_tables<std::string, Polynom> allTables;
+    const Polynom Calculate(string);
 
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();

@@ -707,7 +707,7 @@ bool Monom::EqDegree(const Monom& m) const noexcept
 {
 	return (xpower() == m.xpower() && ypower() == m.ypower() && zpower() == m.zpower());
 }
-string Monom::stringMonom()
+string Monom::toString()
 {
 	int x, y, z;
 	string result = "";
@@ -739,7 +739,7 @@ string Monom::stringMonom()
 
 	return result;
 }
-double Monom::MonomValueInPoint(double x, double y, double z) noexcept {
+double Monom::ValueInPoint(double x, double y, double z) noexcept {
 	double ans = 0;
 	ans = coef * pow(x, xpower()) * pow(y, ypower()) * pow(z, zpower());
 	return ans;
