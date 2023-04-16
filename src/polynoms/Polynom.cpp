@@ -52,7 +52,6 @@ Polynom Polynom::operator +(const Monom& right) const
     // Ассимптотика та же :)
     Polynom res(*this);
     res += right;
-    res.Sort();
     return res;
 }
 Polynom& Polynom::operator +=(const Monom& right)
@@ -191,7 +190,6 @@ Polynom& Polynom::operator *=(const Polynom& right)
 }
 
 
-
 //==================================//
 // Polynom -> double binary methods //
 //==================================//
@@ -218,23 +216,16 @@ Polynom Polynom::operator /(double coeff)
 Polynom Polynom::Integral(char xyz)
 {
     Polynom res;
-    Monom tmp;
-    for(auto& hu:Data){
-       tmp=hu;
-       tmp.Integral(xyz);
-       res+=tmp;
-    }
+    for(auto& hu:Data)
+        res += hu.Integral(xyz);
     return res;
 }
 Polynom Polynom::Derivative(char xyz)
 {
     Polynom res;
-    Monom tmp;
-    for(auto& hu:Data){
-       tmp=hu;
-       tmp.Derivative(xyz);
-       res+=tmp;
-    }
+    for(auto& hu:Data)
+       res += hu.Derivative(xyz);
+    res.Sort();//нужно убрать нулевые мономы(если есть)
     return res;
 
 }
@@ -251,19 +242,13 @@ string Polynom::toString()
     std::string ans="";
     for(auto hu:Data){
         if(hu.coef>0){
-            if(hu==*Data.begin()){
-                ans+=hu.toString();
-            }else{
+            if(hu!=*Data.begin())
                 ans+=" + ";
-                ans+=hu.toString();
-            }
-        }else{
-            if(hu==*Data.begin()){
             ans+=hu.toString();
-            }else{
-                ans+=' '+hu.toString();
-            }
-
+        }else{
+            if(hu!=*Data.begin())
+                ans+=' ';
+            ans+=hu.toString();
         }
     }
     return ans;
@@ -301,12 +286,4 @@ void Polynom::Sort() {
             }
         }
     }
-
-
-
-
-
-
-
 }
-

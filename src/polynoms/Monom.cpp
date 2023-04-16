@@ -749,22 +749,22 @@ double Monom::ValueInPoint(double x, double y, double z) noexcept {
 }
 
 Monom Monom:: Integral(char xyz){
+    if(xyz<'x' || xyz>'z')
+        throw std::invalid_argument("Not correct char! It must be x/y/z!");
     Monom res=*this;
+    res *= Monom(xyz);
     if(xyz=='x'){
-        res*=Monom('x');
         res.coef=coef/res.xpower();
     }else if(xyz=='y'){
-        res*=Monom('y');
         res.coef=coef/res.ypower();
     }else if(xyz=='z'){
-        res*=Monom('z');
         res.coef=coef/res.zpower();
-    }else{
-        throw std::invalid_argument("Not correct char! It must be x/y/z!");
     }
     return res;
 }
 Monom Monom:: Derivative(char xyz){
+    if(xyz<'x' || xyz>'z')
+        throw std::invalid_argument("Not correct char! It must be x/y/z!");
     Monom res=*this;
     if(xyz=='x'){
         if (xpower()==0)return Monom('0');
@@ -778,8 +778,6 @@ Monom Monom:: Derivative(char xyz){
         if (zpower()==0)return Monom('0');
         res.degree-=1;
         res.coef=coef*zpower();
-    }else{
-        throw std::invalid_argument("Not correct char! It must be x/y/z!");
     }
     return res;
 }
