@@ -716,8 +716,11 @@ string Monom::toString()
 	y = ypower();
 	z = zpower();
 
-	if (this->degree == 0 || this->coef != 1.0)
-		result += std::to_string(this->coef);
+    if (this->degree == 0 || this->coef != 1.0){
+        if(this->coef < 0)
+            result +="- " + std::to_string(std::abs(this->coef));
+        else{ result += std::to_string(this->coef);}
+    }
 
 	if (x)
 	{
@@ -745,3 +748,38 @@ double Monom::ValueInPoint(double x, double y, double z) noexcept {
 	return ans;
 }
 
+Monom Monom:: Integral(char xyz){
+    Monom res=*this;
+    if(xyz=='x'){
+        res*=Monom('x');
+        res.coef=coef/res.xpower();
+    }else if(xyz=='y'){
+        res*=Monom('y');
+        res.coef=coef/res.ypower();
+    }else if(xyz=='z'){
+        res*=Monom('z');
+        res.coef=coef/res.zpower();
+    }else{
+        throw std::invalid_argument("Not correct char! It must be x/y/z!");
+    }
+    return res;
+}
+Monom Monom:: Derivative(char xyz){
+    Monom res=*this;
+    if(xyz=='x'){
+        if (xpower()==0)return Monom('0');
+        res.degree-=100;
+        res.coef=coef*xpower();
+    }else if(xyz=='y'){
+        if (ypower()==0)return Monom('0');
+        res.degree-=10;
+        res.coef=coef*ypower();
+    }else if(xyz=='z'){
+        if (zpower()==0)return Monom('0');
+        res.degree-=1;
+        res.coef=coef*zpower();
+    }else{
+        throw std::invalid_argument("Not correct char! It must be x/y/z!");
+    }
+    return res;
+}

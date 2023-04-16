@@ -41,6 +41,8 @@ public:
 	bool LessDegree(const Monom&) const noexcept;  
 	bool EqDegree(const Monom&) const noexcept;
 
+    Monom Integral(char);
+    Monom Derivative(char);
     string toString();
     double ValueInPoint(double x, double y, double z) noexcept;
 };
