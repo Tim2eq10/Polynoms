@@ -103,3 +103,26 @@ void MainWindow::on_pushButton_clicked()
         }
 
 }
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    string input = ui->lineEdit_2->text().toStdString();
+
+    try {
+        ArithmeticalExpression expr(input);
+        Polynom result = expr.getExpr(allTables);
+        //string output = result.getPolynom() + " | value in dot: "  + std::to_string(result.PolynomValueInPoint(valueX, valueY, valueZ));
+        string output = "REAL DATA";
+        ui->lineEdit_3->setText(QString::fromStdString(output));
+    }
+    catch (...) {
+        ui->lineEdit_3->setText(QString::fromStdString("FAIL"));
+        return;
+    }
+}
+
+
+
+
+
+

@@ -32,7 +32,8 @@ SOURCES += \
     src/mainwindow.cpp \
     src/polynoms/Monom.cpp \
     src/polynoms/Polynom.cpp \
-    src/tables/hasher.cpp
+    src/tables/hasher.cpp \
+    src/polynoms/ArithmeticalExpression.cpp
 
 HEADERS += \
     include/mainwindow.h \
@@ -46,7 +47,8 @@ HEADERS += \
     include/tables/hasher.h \
     include/tables/hashmap_chains.h \
     include/tables/hashmap_openadressing.h \
-    include/tables/tree_avl.h
+    include/tables/tree_avl.h \
+    include/polynoms/ArithmeticalExpression.h
 
 FORMS += \
     mainwindow.ui
