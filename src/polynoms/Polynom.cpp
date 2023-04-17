@@ -1,5 +1,5 @@
 #include "include/polynoms/Polynom.h"
-
+#include<unordered_map>
 Polynom::Polynom(const Polynom& other) : Data(other.Data)
 {}
 Polynom::Polynom(const list<Monom>& other)
@@ -44,7 +44,7 @@ Polynom Polynom::operator *(const Monom& right) const
     Polynom res;
     for (auto node : Data)
         res.Data.push_back(node * right);
-
+    res.Sort();
     return res;
 }
 Polynom Polynom::operator +(const Monom& right) const
@@ -66,14 +66,14 @@ Polynom& Polynom::operator +=(const Monom& right)
             break;
         }
     }
-
+    Sort();
     return *this;
 }
 Polynom& Polynom::operator *=(const Monom& right)
 {
     for (auto& node : Data)
         node *= right;
-
+    Sort();
     return *this;
 }
 
@@ -117,7 +117,7 @@ Polynom Polynom::operator *(double k) const
     if (k == 0.0) return res;
     for (auto node : this->Data)
         res.Data.push_back(node * k);
-
+    res.Sort();
     return res;
 }
 Polynom Polynom::operator -(const Polynom& right) const
@@ -190,7 +190,6 @@ Polynom& Polynom::operator *=(const Polynom& right)
 }
 
 
-
 //==================================//
 // Polynom -> double binary methods //
 //==================================//
@@ -214,14 +213,22 @@ Polynom Polynom::operator /(double coeff)
 //===============//
 // Miscellaneous //
 //===============//
-/*Polynom Polynom::Integral(char)
+Polynom Polynom::Integral(char xyz)
 {
+    Polynom res;
+    for(auto& hu:Data)
+        res += hu.Integral(xyz);
+    return res;
+}
+Polynom Polynom::Derivative(char xyz)
+{
+    Polynom res;
+    for(auto& hu:Data)
+       res += hu.Derivative(xyz);
+    res.Sort();//нужно убрать нулевые мономы(если есть)
+    return res;
 
 }
-Polynom Polynom::Derivative(char)
-{
-
-}*/
 double Polynom::ValueInPoint(double x, double y, double z) noexcept
 {
     double ans=0;
@@ -232,11 +239,15 @@ double Polynom::ValueInPoint(double x, double y, double z) noexcept
 }
 string Polynom::toString()
 {
-    std::string ans;
-    for(auto& hu:Data){
-        if(hu.coef>0)
-            ans=ans+'+'+hu.toString();
-        else {
+    std::string ans="";
+    for(auto hu:Data){
+        if(hu.coef>0){
+            if(hu!=*Data.begin())
+                ans+=" + ";
+            ans+=hu.toString();
+        }else{
+            if(hu!=*Data.begin())
+                ans+=' ';
             ans+=hu.toString();
         }
     }
@@ -244,7 +255,23 @@ string Polynom::toString()
 }
 void Polynom::Sort() {
     if (Data.empty());
-    else {
+    else{
+        Polynom tmp;
+        std::unordered_map<int,double> res={};
+        for(auto& hu:Data){
+            int xyz=hu.xpower()*100+hu.ypower()*10+hu.zpower();
+            if(auto search = res.find(xyz); search != res.end()){
+                res[xyz]+=hu.coef;
+            }else{
+                res.insert({xyz,hu.coef});
+            }
+        }
+        for(auto hu:res){
+            if(hu.second!=0.0){
+                tmp+=Monom(hu.second, static_cast<unsigned char>(hu.first/100), (hu.first/10)%10, hu.first%10);
+            }
+        }
+        *this=tmp;
         //sort
         for (auto i = Data.end(); i != Data.begin(); i--) {
             if (i == Data.end());
@@ -258,24 +285,5 @@ void Polynom::Sort() {
                 }
             }
         }
-        //delete 0s
-        for (auto i = Data.begin(); i != Data.end();) {
-            if (i->coef = 0) {
-                Data.erase(i);
-            }
-            else i++;
-
-        }
-        //eq degrees
-        for (auto i = Data.begin(); i != Data.end() ;) {
-            auto t = i;
-            t++;
-            if (t != Data.end() && i->EqDegree(*t)) {
-                Data.emplace(i, *i + *(++i));
-                Data.erase(i);
-            }
-            else i++;
-        }
     }
 }
-
