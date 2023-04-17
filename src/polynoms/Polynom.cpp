@@ -32,7 +32,7 @@ Polynom::Polynom(string polynom)
         temp.clear();
     }
 
-    Sort();
+    // Sort();
 }
 
 
@@ -108,7 +108,7 @@ Polynom Polynom::operator +(const Polynom& right) const
 
     while (r_it != right.Data.end())
         res.Data.push_back(*(r_it++));
-    res.Sort();
+    //res.Sort();
     return res;
 }
 Polynom Polynom::operator *(double k) const
@@ -117,7 +117,7 @@ Polynom Polynom::operator *(double k) const
     if (k == 0.0) return res;
     for (auto node : this->Data)
         res.Data.push_back(node * k);
-    res.Sort();
+    //res.Sort();
     return res;
 }
 Polynom Polynom::operator -(const Polynom& right) const
@@ -161,7 +161,7 @@ Polynom Polynom::operator *(const Polynom& right) const
             res.Data.push_back(tmp);
         }
     }
-    res.Sort();
+    //res.Sort();
     return res;
 }
 
@@ -260,7 +260,7 @@ void Polynom::Sort() {
         std::unordered_map<int,double> res={};
         for(auto& hu:Data){
             int xyz=hu.xpower()*100+hu.ypower()*10+hu.zpower();
-            if(auto search = res.find(xyz); search != res.end()){
+            if(res.find(xyz) != res.end()) {
                 res[xyz]+=hu.coef;
             }else{
                 res.insert({xyz,hu.coef});

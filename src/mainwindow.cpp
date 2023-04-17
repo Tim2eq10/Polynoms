@@ -9,8 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->tableWidget->setColumnCount(4);
-    ui->tableWidget->setHorizontalHeaderLabels(QStringList() << "Name" << "Polynom" << "Derivative" << "Integral");
+    ui->tableWidget->setColumnCount(2);
+    ui->tableWidget->setHorizontalHeaderLabels(QStringList() << "Name" << "Polynom");
 }
 
 MainWindow::~MainWindow()
@@ -82,7 +82,8 @@ void MainWindow::on_pushButton_clicked()
             allTables.insert(polynomName.toStdString(), polynom);
             ui->tableWidget->insertRow(ui->tableWidget->rowCount());
             QTableWidgetItem *itemName = new QTableWidgetItem(polynomName);
-            QTableWidgetItem *itemPolynom = new QTableWidgetItem(polynomData);
+            //QTableWidgetItem *itemPolynom = new QTableWidgetItem(polynomData);
+            QTableWidgetItem *itemPolynom = new QTableWidgetItem(QString::fromStdString(polynom.toString()));
 
             ui->tableWidget->setItem(ui->tableWidget->rowCount() - 1, 0, itemName);
             ui->tableWidget->setItem(ui->tableWidget->rowCount() - 1, 1, itemPolynom);
@@ -93,8 +94,8 @@ void MainWindow::on_pushButton_clicked()
             for (int i = 0; i < ui->tableWidget->rowCount(); i++)
                 if (ui->tableWidget->item(i, 0)->text() == polynomName) {
                     QTableWidgetItem *itemName = new QTableWidgetItem(polynomName);
-                    QTableWidgetItem *itemPolynom = new QTableWidgetItem(polynomData);
-                    //QTableWidgetItem *itemPolynom = new QTableWidgetItem(QString::fromStdString(polynom.getPolynom()));
+                    //QTableWidgetItem *itemPolynom = new QTableWidgetItem(polynomData);
+                    QTableWidgetItem *itemPolynom = new QTableWidgetItem(QString::fromStdString(polynom.toString()));
 
                     ui->tableWidget->setItem(i, 0, itemName);
                     ui->tableWidget->setItem(i, 1, itemPolynom);
@@ -108,13 +109,12 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pushButton_3_clicked()
 {
-    string input = ui->lineEdit_2->text().toStdString();
-
     try {
+        string input = ui->lineEdit_2->text().toStdString();
         ArithmeticalExpression expr(input);
         Polynom result = expr.getExpr(allTables);
-        //string output = result.getPolynom() + " | value in dot: "  + std::to_string(result.PolynomValueInPoint(valueX, valueY, valueZ));
-        string output = "REAL DATA";
+        string output = result.toString() + " | value in dot: "  + std::to_string(result.ValueInPoint(valueX, valueY, valueZ));
+        //string output = "REAL DATA";
         ui->lineEdit_3->setText(QString::fromStdString(output));
     }
     catch (...) {
