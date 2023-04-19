@@ -42,5 +42,7 @@ public:
     Polynom Derivative(char);
     double ValueInPoint(double x, double y, double z) noexcept;
     string toString();
+
     void Sort();
 };
+bool SortingExpr(const Monom& first, const Monom& second);
