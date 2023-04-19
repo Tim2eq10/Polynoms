@@ -66,7 +66,7 @@ Monom::Monom(string raw_input)
                 coef = 1;
             }
             else if (c == 'z') {
-                stage = 20;
+                stage = 35;
                 coef = 1;
             }
             else if (c >= '0' && c <= '9') {
@@ -80,7 +80,6 @@ Monom::Monom(string raw_input)
         }
         if (stage == 2) {
             if (c == 'x') {
-                degree = 100;
                 stage = 5;
             }
             else if (c == 'y') {
