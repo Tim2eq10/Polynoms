@@ -45,4 +45,4 @@ public:
 
     void Sort();
 };
-bool SortingExpr(const Monom& first, const Monom& second);
+bool SortingComparator(const Monom& first, const Monom& second);
