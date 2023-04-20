@@ -724,9 +724,8 @@ string Monom::toString()
             result += " - ";
         if (std::abs(coef) != 1 || (std::abs(coef)==1 && degree==0 )) {
             result += std::to_string(std::abs(this->coef));
-            if (result[result.size() - 1] == '0')
-                for (size_t i = result.size() - 1; result[i] == '0'; i--)
-                    result.erase(i, 1);
+            for (size_t i = result.size() - 1; result[i] == '0'; i--)
+                result.erase(i, 1);
 
             if (result[result.size() - 1] == '.')
                 result.erase(result.size() - 1, 1);
