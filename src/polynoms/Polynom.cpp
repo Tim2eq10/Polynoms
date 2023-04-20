@@ -263,9 +263,9 @@ string Polynom::toString()
 }
 
 void Polynom::Sort() {
-    std::unordered_map<int, double> res = {};
+    std::unordered_map<size_t, double> res = {};
     for (auto& hu : Data) {
-        int xyz = static_cast<int>(hu.xpower() * 100 + hu.ypower() * 10 + hu.zpower());
+        size_t xyz = static_cast<int>(hu.xpower() * 100 + hu.ypower() * 10 + hu.zpower());
         res[xyz] += hu.coef;
     }
     Monom tmp1;
@@ -279,8 +279,8 @@ void Polynom::Sort() {
         }
     }
     Data = list<Monom>(tmp);
-    Data.sort(SortingExpr);
+    Data.sort(SortingComparator);
 }
-bool SortingExpr(const Monom& first, const Monom& second) {
+bool SortingComparator(const Monom& first, const Monom& second) {
     return (first.Monom::LessDegree(second));
 }
