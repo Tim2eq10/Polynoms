@@ -2,9 +2,10 @@
 #include <cmath>
 #include <set>
 
+
 Monom::Monom(double coef_val, unsigned char x, unsigned char y, unsigned char z) noexcept : coef(coef_val)
 {
-	degree = static_cast<unsigned short>(x) * 100 + y * 10 + z;
+    degree = static_cast<unsigned short>(x) * 100 + y * 10 + z;
 }
 Monom::Monom(double coef_val) noexcept : degree(0), coef(coef_val)
 {}
@@ -65,7 +66,7 @@ Monom::Monom(string raw_input)
                 coef = 1;
             }
             else if (c == 'z') {
-                stage = 20;
+                stage = 35;
                 coef = 1;
             }
             else if (c >= '0' && c <= '9') {
@@ -79,7 +80,6 @@ Monom::Monom(string raw_input)
         }
         if (stage == 2) {
             if (c == 'x') {
-                degree = 100;
                 stage = 5;
             }
             else if (c == 'y') {
@@ -581,7 +581,7 @@ Monom::Monom(string raw_input)
         throw std::invalid_argument("Incorrect string to transform");
 
     if (negative_coef)
-            coef *= -1;
+        coef *= -1;
 
     // last char is x
     if (stage == 5 || stage == 23 || stage == 32 || stage == 38 || stage == 47)
@@ -595,189 +595,213 @@ Monom::Monom(string raw_input)
 }
 Monom& Monom::operator=(const Monom& monom) noexcept
 {
-	if (this == &monom)
-		return *this;
-	this->degree = monom.degree;
-	this->coef = monom.coef;
-	return *this;
+    if (this == &monom)
+        return *this;
+    this->degree = monom.degree;
+    this->coef = monom.coef;
+    return *this;
 }
 const Monom Monom::operator+(const Monom& monom) const
 {
-	if (this->degree != monom.degree)
-	{
-		throw std::invalid_argument("Not equal degrees of monoms!");
-	}
-	Monom ans(*this);
-	ans.coef += monom.coef;
-	return ans;
+    if (this->degree != monom.degree)
+    {
+        throw std::invalid_argument("Not equal degrees of monoms!");
+    }
+    Monom ans(*this);
+    ans.coef += monom.coef;
+    return ans;
 }
 Monom& Monom::operator+=(const Monom& monom)
 {
-	Monom t(*this);
-	*this = t + monom;
-	return *this;
+    Monom t(*this);
+    *this = t + monom;
+    return *this;
 }
 const Monom Monom::operator -(const Monom& monom) const
 {
-	if (this->degree != monom.degree)
-	{
-		throw std::invalid_argument("Not equal degrees of monoms!");
-	}
-	Monom ans(*this);
-	ans.coef -= monom.coef;
-	return ans;
+    if (this->degree != monom.degree)
+    {
+        throw std::invalid_argument("Not equal degrees of monoms!");
+    }
+    Monom ans(*this);
+    ans.coef -= monom.coef;
+    return ans;
 }
 Monom& Monom::operator-=(const Monom& monom)
 {
-	*this = *this - monom;
-	return *this;
+    *this = *this - monom;
+    return *this;
 }
 const Monom Monom::operator*(const Monom& monom) const
 {
-	unsigned char x, y, z, xo, yo, zo;
+    unsigned char x, y, z, xo, yo, zo;
 
-	x = xpower();
-	y = ypower();
-	z = zpower();
-	xo = monom.xpower();
-	yo = monom.ypower();
-	zo = monom.zpower();
-	int px = x + xo, py = y + yo, pz = z + zo;
+    x = xpower();
+    y = ypower();
+    z = zpower();
+    xo = monom.xpower();
+    yo = monom.ypower();
+    zo = monom.zpower();
+    int px = x + xo, py = y + yo, pz = z + zo;
 
-	if (px > 9 || py > 9 || pz > 9)
-	{
-		throw std::invalid_argument("Too large degree!");
-	}
-	Monom third(*this);
-	third.degree += monom.degree;
-	third.coef *= monom.coef;
-	return third;
+    if (px > 9 || py > 9 || pz > 9)
+    {
+        throw std::invalid_argument("Too large degree!");
+    }
+    Monom third(*this);
+    third.degree += monom.degree;
+    third.coef *= monom.coef;
+    return third;
 }
 Monom& Monom::operator *=(const Monom& other)
 {
-	Monom t(*this);
-	*this = t * other;
-	return *this;
+    Monom t(*this);
+    *this = t * other;
+    return *this;
 }
 Monom& Monom::operator *=(double temp) noexcept
 {
-	this->coef *= temp;
-	return *this;
+    this->coef *= temp;
+    return *this;
 }
 const Monom Monom::operator *(double temp) const noexcept
 {
-	Monom ans(coef, xpower(), ypower(), zpower());
-	ans.coef *= temp;
-	return ans;
+    Monom ans(coef, xpower(), ypower(), zpower());
+    ans.coef *= temp;
+    return ans;
 }
 
 bool Monom::operator <(const Monom& other) const noexcept
 {
-	if (this->degree == other.degree)
-		return this->coef < other.coef;
-	return this->degree < other.degree;
+    if (this->degree == other.degree)
+        return this->coef < other.coef;
+    return this->degree < other.degree;
 }
 bool Monom::operator <=(const Monom& other) const noexcept
 {
-	return !(*this > other);
+    return !(*this > other);
 }
 bool Monom::operator >(const Monom& other) const noexcept
 {
-	return other < *this;
+    return other < *this;
 }
 bool Monom::operator >=(const Monom& other) const noexcept
 {
-	return !(*this < other);
+    return !(*this < other);
 }
 bool Monom::operator ==(const Monom& other) const noexcept
 {
-	return !(other<*this || *this>other);
+    return !(other<*this || *this>other);
 }
 bool Monom::operator !=(const Monom& other) const noexcept
 {
-	return !(*this == other);
+    return !(*this == other);
 }
 
 
 bool Monom::LessDegree(const Monom& m) const noexcept
 {
-	return (xpower() + ypower() + zpower() < m.xpower() + m.ypower() + m.zpower());
+    return (xpower() + ypower() + zpower() < m.xpower() + m.ypower() + m.zpower());
 }
 bool Monom::EqDegree(const Monom& m) const noexcept
 {
-	return (xpower() == m.xpower() && ypower() == m.ypower() && zpower() == m.zpower());
+    return (xpower() == m.xpower() && ypower() == m.ypower() && zpower() == m.zpower());
+
+
 }
+
 string Monom::toString()
 {
-	int x, y, z;
-	string result = "";
+    int x, y, z;
+    string result = "";
 
-	x = xpower();
-	y = ypower();
-	z = zpower();
+    x = xpower();
+    y = ypower();
+    z = zpower();
 
-    if (this->degree == 0 || this->coef != 1.0){
-        if(this->coef < 0)
-            result +="- " + std::to_string(std::abs(this->coef));
-        else{ result += std::to_string(this->coef);}
+    if (this->degree == 0 || this->coef != 1.0) {
+        if (coef < 0)
+            result += " - ";
+        if (std::abs(coef) != 1 || (std::abs(coef)==1 && degree==0 )) {
+            result += std::to_string(std::abs(this->coef));
+            for (size_t i = result.size() - 1; result[i] == '0'; i--)
+                result.erase(i, 1);
+
+            if (result[result.size() - 1] == '.')
+                result.erase(result.size() - 1, 1);
+        }
     }
 
-	if (x)
-	{
-		result += "x";
-		if (x != 1) result += "^" + std::to_string(x);
-	}
+    if (x)
+    {
+        result += "x";
+        if (x != 1) result += "^" + std::to_string(x);
+    }
 
-	if (y)
-	{
-		result += "y";
-		if (y != 1) result += "^" + std::to_string(y);
-	}
+    if (y)
+    {
+        result += "y";
+        if (y != 1) result += "^" + std::to_string(y);
+    }
 
-	if (z)
-	{
-		result += "z";
-		if (z != 1) result += "^" + std::to_string(z);
-	}
+    if (z)
+    {
+        result += "z";
+        if (z != 1) result += "^" + std::to_string(z);
+    }
 
-	return result;
+    return result;
 }
 double Monom::ValueInPoint(double x, double y, double z) noexcept {
-	double ans = 0;
-	ans = coef * pow(x, xpower()) * pow(y, ypower()) * pow(z, zpower());
-	return ans;
+    double ans = 0;
+    ans = coef * pow(x, xpower()) * pow(y, ypower()) * pow(z, zpower());
+    return ans;
 }
 
-Monom Monom:: Integral(char xyz){
-    if(xyz<'x' || xyz>'z')
+Monom Monom::Integral(char xyz) {
+    if (xyz < 'x' || xyz>'z')
         throw std::invalid_argument("Not correct char! It must be x/y/z!");
-    Monom res=*this;
+    Monom res = *this;
     res *= Monom(xyz);
-    if(xyz=='x'){
-        res.coef=coef/res.xpower();
-    }else if(xyz=='y'){
-        res.coef=coef/res.ypower();
-    }else if(xyz=='z'){
-        res.coef=coef/res.zpower();
+    if (xyz == 'x') {
+
+        if (xpower() == 9) throw std::invalid_argument("Too large degree of X");
+        res.degree += 100;
+        res.coef = coef / res.xpower();
+    }
+    else if (xyz == 'y') {
+
+        if (ypower() == 9) throw std::invalid_argument("Too large degree of Y");
+        res.degree += 10;
+        res.coef = coef / res.ypower();
+    }
+    else if (xyz == 'z') {
+
+        if (zpower() == 9) throw std::invalid_argument("Too large degree of Z");
+        res.degree += 1;
+        res.coef = coef / res.zpower();
     }
     return res;
 }
-Monom Monom:: Derivative(char xyz){
-    if(xyz<'x' || xyz>'z')
+Monom Monom::Derivative(char xyz) {
+    if (xyz < 'x' || xyz>'z')
         throw std::invalid_argument("Not correct char! It must be x/y/z!");
-    Monom res=*this;
-    if(xyz=='x'){
-        if (xpower()==0)return Monom('0');
-        res.degree-=100;
-        res.coef=coef*xpower();
-    }else if(xyz=='y'){
-        if (ypower()==0)return Monom('0');
-        res.degree-=10;
-        res.coef=coef*ypower();
-    }else if(xyz=='z'){
-        if (zpower()==0)return Monom('0');
-        res.degree-=1;
-        res.coef=coef*zpower();
+    Monom res = *this;
+    if (xyz == 'x') {
+        if (xpower() == 0)return Monom();
+        res.degree -= 100;
+        res.coef = coef * xpower();
+    }
+    else if (xyz == 'y') {
+        if (ypower() == 0)return Monom();
+        res.degree -= 10;
+        res.coef = coef * ypower();
+    }
+    else if (xyz == 'z') {
+        if (zpower() == 0)return Monom();
+        res.degree -= 1;
+        res.coef = coef * zpower();
     }
     return res;
 }
+

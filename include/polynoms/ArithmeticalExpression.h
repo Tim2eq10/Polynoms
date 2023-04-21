@@ -13,7 +13,7 @@ private:
     std::string infix;
     std::vector<std::string> postfix;
     std::vector<std::string> lexems;
-    const static inline std::map<char, int> priority = { {'+', 1}, {'-', 1}, {'*', 2} };
+    static inline std::map<char, int> priority = { {'+', 1}, {'-', 1}, {'*', 2} };
 
     void Tokenize();
     void ToPostfix();
